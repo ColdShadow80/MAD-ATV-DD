@@ -6,7 +6,7 @@ pver="2.0"
 #This is for nfs install script
 nver="1.2"
 # mad rom version
-madver="0.1.2"
+madver="0.1.3"
 #magisk version / url
 magisk_ver="20.3"
 msum="959e46971c2eb500b91a053b2f1c1a8c"
@@ -50,20 +50,20 @@ if awk -F'"' '/com.android.contacts"/{print $8}' /data/system/sync/accounts.xml 
     return 0
 elif ! grep -q "com.google.android.gms" /sdcard/window_dump.xml ;then
     return 0 # this isnt really success, but it will get caught by an outter loop and start over
-elif grep -q 'package="com.google.android.tungsten.setupwraith" content-desc="Welcome"' /sdcard/window_dump.xml ;then
-    input keyevent 66
-    sleep 2
-    input keyevent 20
-    sleep 2
-    input keyevent 66
-    sleep 2
-    input keyevent 66    
 elif grep -q "Forgot email?" /sdcard/window_dump.xml ;then
     input keyevent 20
     sleep 2
     input keyevent 20
     sleep 2
     input text "$email"
+    sleep 2
+    input keyevent 66
+elif grep -q 'package="com.google.android.tungsten.setupwraith" content-desc="Welcome"' /sdcard/window_dump.xml ;then
+    input keyevent 66
+    sleep 2
+    input keyevent 20
+    sleep 2
+    input keyevent 66
     sleep 2
     input keyevent 66
 elif grep -q "Enter your password" /sdcard/window_dump.xml ;then
