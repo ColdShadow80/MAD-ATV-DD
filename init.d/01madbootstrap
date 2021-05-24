@@ -10,7 +10,7 @@ until /system/bin/curl -s -k -L -A "$useragent" -o "$2" "$1" ;do
 done
 }
 
-initfile="/system/etc/init.d/42mad"
+initfile="/system/etc/init.d/32mad"
 
 if ! [[ -f "$initfile" ]] ;then
  mkdir -p /data/local/madromlogs/
