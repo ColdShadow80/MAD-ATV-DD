@@ -50,6 +50,14 @@ if awk -F'"' '/com.android.contacts"/{print $8}' /data/system/sync/accounts.xml 
     return 0
 elif ! grep -q "com.google.android.gms" /sdcard/window_dump.xml ;then
     return 0 # this isnt really success, but it will get caught by an outter loop and start over
+elif grep -q 'package="com.google.android.tungsten.setupwraith" content-desc="Welcome"' /sdcard/window_dump.xml ;then
+    input keyevent 66
+    sleep 2
+    input keyevent 20
+    sleep 2
+    input keyevent 66
+    sleep 2
+    input keyevent 66    
 elif grep -q "Forgot email?" /sdcard/window_dump.xml ;then
     input keyevent 20
     sleep 2
@@ -360,7 +368,7 @@ fi
 if ! [[ -f /sbin/magisk ]] ;then
     log_msg 2 "Preparing Magisk installation"
     touch /sdcard/magisk_repackage
-    download_smali
+    install_magisk
     echo '--update_package=/sdcard/smali.zip' >> /cache/recovery/command
     
 elif ! magisk -c|grep -q "$magisk_ver"; then
