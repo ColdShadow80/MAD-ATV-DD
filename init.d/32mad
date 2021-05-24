@@ -369,7 +369,8 @@ if ! [[ -f /sbin/magisk ]] ;then
     log_msg 2 "Preparing Magisk installation"
     touch /sdcard/magisk_repackage
     install_magisk
-    echo '--update_package=/sdcard/smali.zip' >> /cache/recovery/command
+# NOT WORKING YET, So smali must be commented so that it does not stop at TWRP installing magisk
+#    echo '--update_package=/sdcard/smali.zip' >> /cache/recovery/command
     
 elif ! magisk -c|grep -q "$magisk_ver"; then
     log_msg 2 "Updating Magisk"
