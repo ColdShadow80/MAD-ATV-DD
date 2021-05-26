@@ -6,7 +6,7 @@ pver="2.0"
 #This is for nfs install script
 nver="1.2"
 # mad rom version
-madver="0.1.4"
+madver="0.1.5"
 #magisk version / url
 magisk_ver="20.3"
 msum="959e46971c2eb500b91a053b2f1c1a8c"
@@ -58,14 +58,10 @@ elif grep -q "Forgot email?" /sdcard/window_dump.xml ;then
     input text "$email"
     sleep 2
     input keyevent 66
-elif grep -q 'package="com.google.android.tungsten.setupwraith" content-desc="Welcome"' /sdcard/window_dump.xml ;then
+# Let's try to sign in into Google
+elif grep -q 'text="Sign in to your account" resource-id="com.google.android.gsf.notouch:id/title_text"' /sdcard/window_dump.xml ;then
     input keyevent 66
     sleep 2
-    input keyevent 20
-    sleep 2
-    input keyevent 66
-    sleep 2
-    input keyevent 66
 elif grep -q "Enter your password" /sdcard/window_dump.xml ;then
     input keyevent 20
     sleep 2
@@ -139,11 +135,12 @@ else
 fi
 }
 
-autoconf_google_signin() {
-until [[ -f /sdcard/google-account ]] ;do
-    /system/bin/curl -s -k -L -o /sdcard/google-account --user "$pdauth" -H "origin: $origin" "${pdserver}/autoconfig/${session_id}/google"
-    sleep 10
-done
+#LETS KILL GOOGLE FOR A WHILE BECAUSE THIS DOES NOT WORK YET AND I CANNOT SEE PAST THIS LOOP
+#autoconf_google_signin() {
+#until [[ -f /sdcard/google-account ]] ;do
+#    /system/bin/curl -s -k -L -o /sdcard/google-account --user "$pdauth" -H "origin: $origin" "${pdserver}/autoconfig/${session_id}/google"
+#    sleep 10
+#done
 if [[  "$(sed -n 2p /sdcard/google-account)" ]] ;then
     am force-stop de.grennith.rgc.remotegpscontroller
     log_msg 2 "Google Account data downloaded to /sdcard/google-account"
