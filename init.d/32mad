@@ -477,7 +477,6 @@ else
             log_msg 2 "Installed /system/bin/update_mad.sh"
         fi
            if [[ -f "/mnt/media_rw/PogoDroid*.apk" && -f "/mnt/media_rw/RGC.apk" && -f "/mnt/media_rw/Pokemon*.apk"]] 
-           then
               log_msg 2 "Pogodroid, RGC and Pokemon Go APKs found in USB drive, starting instal"
               log_msg 2 "Starting install of POGODROID"
               /system/bin/pm install -r /mnt/media_rw/PogoDroid*.apk
