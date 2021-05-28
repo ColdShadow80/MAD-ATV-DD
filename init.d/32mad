@@ -6,7 +6,7 @@ pver="2.0"
 #This is for nfs install script
 nver="1.2"
 # mad rom version
-madver="0.1.7"
+madver="0.1.8"
 #magisk version / url
 magisk_ver="20.3"
 msum="959e46971c2eb500b91a053b2f1c1a8c"
@@ -476,8 +476,20 @@ else
             chmod +x /system/bin/update_mad.sh
             log_msg 2 "Installed /system/bin/update_mad.sh"
         fi
-        log_msg 2 "Starting install of RGC, PoGo and PD from your madmin wizard"
-        sh -x /system/bin/update_mad.sh -pdc -wa
+           if [[ -f "/mnt/media_rw/PogoDroid*.apk" && -f "/mnt/media_rw/RGC.apk" && -f "/mnt/media_rw/Pokemon*.apk"]] ;then
+              log_msg 2 "Pogodroid, RGC and Pokemon Go APKs found in USB drive, starting instal"
+              log_msg 2 "Starting install of POGODROID"
+              /system/bin/pm install -r /mnt/media_rw/PogoDroid*.apk
+              log_msg 2 "Starting install of RGC"
+              /system/bin/pm install -r /mnt/media_rw/RGC.apk
+              log_msg 2 "Starting install of Pokemon"
+              /system/bin/pm install -r /mnt/media_rw/Pokemon*.apk
+              log_msg 2 "Updating Init Scripts"
+              sh -x /system/bin/update_mad.sh -pdc -i
+           else
+               log_msg 2 "Starting install of RGC, PoGo and PD from your madmin wizard"
+               sh -x /system/bin/update_mad.sh -pdc -wa
+           fi
     fi
 fi
 mount -o remount,rw /system
