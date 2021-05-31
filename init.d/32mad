@@ -6,7 +6,7 @@ pver="2.0"
 #This is for nfs install script
 nver="1.2"
 # mad rom version
-madver="0.1.8"
+madver="0.1.9"
 #magisk version / url
 magisk_ver="20.3"
 msum="959e46971c2eb500b91a053b2f1c1a8c"
@@ -470,6 +470,9 @@ else
         /system/bin/curl -s -k -L -o "/data/local/pdconf" --user "$pdauth" "${pdserver}/autoconfig/${session_id}/pd"
         log_msg 2 "PD configuration downloaded to /data/local/pdconf"
         checkmac
+        wait_for_network
+        ip_new="$(ifconfig | grep -A 1 'eth0' | tail -1 | cut -d ':' -f 2 | cut -d ' ' -f 1)"
+        log_msg 2 "Checking for IP changes after assigning MAC. My current connection and IP is $ip_new"
         echo "Installing the apps from the wizard"
         if ! grep -q "version $uver" /system/bin/update_mad.sh; then
             download https://raw.githubusercontent.com/ColdShadow80/MAD-ATV-DD/main/bin/update_mad.sh /system/bin/update_mad.sh
