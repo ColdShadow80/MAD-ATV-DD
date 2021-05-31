@@ -6,7 +6,7 @@ pver="2.0"
 #This is for nfs install script
 nver="1.2"
 # mad rom version
-madver="0.1.9"
+madver="0.2.0"
 #magisk version / url
 magisk_ver="20.3"
 msum="959e46971c2eb500b91a053b2f1c1a8c"
@@ -283,6 +283,7 @@ input keyevent 61
 sleep 2
 input keyevent 66
 sleep 2
+log_msg 2 "Magisk repackaging cycle complete. Verifying..."
 }
 
 install_magisk() {
@@ -290,6 +291,12 @@ download "$url_magisk" /sdcard/magisk.zip
 mkdir -p /cache/recovery
 touch /cache/recovery/command
 echo '--update_package=/sdcard/magisk.zip' >> /cache/recovery/command
+log_msg 2 "Downloading Smali"
+   download_smali
+log_msg 2 "Finished downloading Smali, seting up instal of Magisk and Smali"   
+   echo '--update_package=/sdcard/smali.zip' >> /cache/recovery/command
+   echo '--wipe_cache' >> /cache/recovery/command
+log_msg 2 "Ready to reboot"   
 cachereboot=1
 }
 
