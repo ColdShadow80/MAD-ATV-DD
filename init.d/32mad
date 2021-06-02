@@ -537,7 +537,7 @@ fi
 [[ -d /sdcard/TWRP ]] && rm -rf /sdcard/TWRP
 echo "$madver" > /sdcard/madversion
 if (( "$cachereboot" )) ;then
-    log_msg "2" "Rebooting into recovery mode for required installations"
+    log_msg 2 "Rebooting into recovery mode for required installations"
     echo '--wipe_cache' >> /cache/recovery/command
     reboot recovery
 fi
