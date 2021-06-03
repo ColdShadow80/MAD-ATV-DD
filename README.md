@@ -21,4 +21,4 @@ Rom can copy files from usb instead of downloading to speed up the process. Belo
   - smali-s905w.zip from <https://github.com/Map-A-Droid/MAD-ATV/blob/master/smali/smali-s905w.zip>
   - NFS-INJECTOR-v7.8.FLASHPOINT.zip from <https://github.com/Map-A-Droid/MAD-ATV/raw/master/nfs/NFS-INJECTOR-v7.8.FLASHPOINT.zip>
 <BR>  
-  Note: NFS will only be installed when located on usb !!
+  Note: NFS will only be installed when located on usb !! other files will me downloaded when not included.
