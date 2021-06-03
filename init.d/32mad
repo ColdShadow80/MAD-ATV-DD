@@ -6,7 +6,7 @@ pver="2.0"
 #This is for nfs install script
 nver="1.2"
 # mad rom version
-madver="0.2.1"
+madver="0.2.7"
 #magisk version / url
 magisk_ver="20.3"
 msum="959e46971c2eb500b91a053b2f1c1a8c"
@@ -287,29 +287,49 @@ sleep 2
 log_msg 2 "Magisk repackaging cycle complete. Verifying..."
 }
 
-install_magisk() {
-download "$url_magisk" /sdcard/magisk.zip
-mkdir -p /cache/recovery
-touch /cache/recovery/command
-echo '--update_package=/sdcard/magisk.zip' >> /cache/recovery/command
-log_msg 2 "Downloading Smali"
-   download_smali
-log_msg 2 "Finished downloading Smali, seting up instal of Magisk and Smali"   
-   echo '--update_package=/sdcard/smali.zip' >> /cache/recovery/command
-   log_msg 2 "Downloading NFS because Dkmur asked...a lot"
-rm /sdcard/NFS-INJECTOR.zip
-download "$NFS_url" /sdcard/NFS-INJECTOR.zip
-log_msg 2 "setting up NFS install on next reboot."
-echo '--update_package=/sdcard/NFS-INJECTOR.zip' >> /cache/recovery/command
-log_msg 2 "Ready to reboot, cross your fingers."
-echo '--wipe_cache' >> /cache/recovery/command
-cachereboot=1
-}
-
 download_smali(){
 [[ "$madmodel" ]] && download "https://github.com/Map-A-Droid/MAD-ATV/raw/master/smali/smali-${madmodel}.zip" /sdcard/smali.zip
 }
 
+install_magisk() {
+
+magisk_install="$(find /mnt/media_rw/ -iname Magisk*.zip 2>/dev/null)"
+if [[ -z "$magisk_install" ]];then
+log_msg 2 "Downloading masgisk"
+download "$url_magisk" /sdcard/magisk.zip
+mkdir -p /cache/recovery
+touch /cache/recovery/command
+echo '--update_package=/sdcard/magisk.zip' >> /cache/recovery/command
+else
+cp $magisk_install /sdcard/magisk.zip
+mkdir -p /cache/recovery
+touch /cache/recovery/command
+echo '--update_package=/sdcard/magisk.zip' >> /cache/recovery/command
+fi
+
+smali_install="$(find /mnt/media_rw/ -iname smali*.zip 2>/dev/null)"
+if [[ -z "$smali_install" ]];then
+log_msg 2 "Downloading Smali"
+download_smali
+echo '--update_package=/sdcard/smali.zip' >> /cache/recovery/command
+else
+log_msg 2 "Copying Smali from usb"
+cp $smali_install /sdcard/smali.zip
+echo '--update_package=/sdcard/smali.zip' >> /cache/recovery/command
+fi
+
+NFS_install="$(find /mnt/media_rw/ -iname NFS*.zip 2>/dev/null)"
+if [[ -z "$NFS_install" ]];then
+log_msg 2 "No NFS file found on usb, skipping install"
+else
+cp $NFS_install /sdcard/NFS-INJECTOR.zip
+echo '--update_package=/sdcard/NFS-INJECTOR.zip' >> /cache/recovery/command
+fi
+
+log_msg 2 "Magisk and packages ready for reboot"
+echo '--wipe_cache' >> /cache/recovery/command
+cachereboot=1
+}
 
 madmodel="$(grep ro.product.board /system/build.prop |awk -F'=' '{print $2}'|tr '[:upper:]' '[:lower:]')"
 if [[ "$madmodel" == s905w ]] ;then
@@ -342,10 +362,6 @@ else
    unset madmodel
 fi
 [[ "$madmodel" ]] && [[ "$madmodel" != "t95s1" ]] && madrom=1
-
-download_smali(){
-[[ "$madmodel" ]] && download "https://github.com/Map-A-Droid/MAD-ATV/raw/master/smali/smali-${madmodel}.zip" /sdcard/smali.zip
-}
 
 check_magisk(){
 # We'll attempt to do this a little early since apparently people get impatient
@@ -491,46 +507,64 @@ else
             download https://raw.githubusercontent.com/ColdShadow80/MAD-ATV-DD/main/bin/update_mad.sh /system/bin/update_mad.sh
             chmod +x /system/bin/update_mad.sh
             log_msg 2 "Installed /system/bin/update_mad.sh"
-        fi
-           if [[ -f "/mnt/media_rw/PogoDroid*.apk" && -f "/mnt/media_rw/RGC.apk" && -f "/mnt/media_rw/Pokemon*.apk" ]] ;then
-              log_msg 2 "Pogodroid, RGC and Pokemon Go APKs found in USB drive, starting instal"
-              log_msg 2 "Starting install of POGODROID"
-              /system/bin/pm install -r /mnt/media_rw/PogoDroid*.apk
-              log_msg 2 "Starting install of RGC"
-              /system/bin/pm install -r /mnt/media_rw/RGC.apk
-              log_msg 2 "Starting install of Pokemon"
-              /system/bin/pm install -r /mnt/media_rw/Pokemon*.apk
-              log_msg 2 "Updating Init Scripts"
-              sh -x /system/bin/update_mad.sh -pdc -i
-           else
-               log_msg 2 "Starting install of RGC, PoGo and PD from your madmin wizard"
-               sh -x /system/bin/update_mad.sh -pdc -wa
-           fi
+            fi
+                
+            PDusb="$(find /mnt/media_rw/ -iname PogoDroid*.apk 2>/dev/null)"
+            POGOusb="$(find /mnt/media_rw/ -iname pokemon*.apk 2>/dev/null)"
+            RGCusb="$(find /mnt/media_rw/ -iname rgc.apk 2>/dev/null)"
+            if [[ -z "$PDusb" || -z "$POGOusb" || -z "$RGCusb" ]] ;then
+                log_msg 2 "Starting download and install of RGC, PoGo and PD from your madmin wizard"
+                sh -x /system/bin/update_mad.sh -pdc -wa
+            else
+                log_msg 2 "Pogodroid, RGC and Pokemon Go APKs found in USB drive, starting install"
+                sleep 1
+                log_msg 2 "Installing POGODROID from $PDusb"
+                /system/bin/pm install -r $PDusb
+                log_msg 2 "Installing RGC from $RGCusb"
+                /system/bin/pm install -r $RGCusb
+                log_msg 2 "Installing Pokemon from $POGOusb"
+                /system/bin/pm install -r $POGOusb
+#                log_msg 2 "PD, Pogo and RGC installed from USB drive. Updating Init Scripts"
+#                sh -x /system/bin/update_mad.sh -pdc -i
+#                reboot 
+            fi
     fi
 fi
+
 mount -o remount,rw /system
 check_magisk
-# Install gapps
+
+# Download and install gapps
 if [[ ! $(pm list packages android.vending) ]] ;then
-    log_msg 2 "Preparing GApps installation"
-    download "$url_gapps" /sdcard/gapps.zip
-    mkdir -p /cache/recovery
+	GAPPSusb="$(find /mnt/media_rw/ -iname open_gapps-arm64-7.1-pico-20200715.zip 2>/dev/null)"
+	if [[ -z "$PDusb" ]] ;then
+		log_msg 2 "Downloading gapps"
+		download "$url_gapps" /sdcard/gapps.zip
+	else
+		log_msg 2 "Copy gapps from usb"
+		cp $GAPPSusb /sdcard/gapps.zip
+	fi
+#	mkdir -p /cache/recovery
     touch /cache/recovery/command
     echo '--update_package=/sdcard/gapps.zip' >> /cache/recovery/command
     cachereboot=1
 fi
+	
 [[ -d /sdcard/TWRP ]] && rm -rf /sdcard/TWRP
+echo "$madver" > /sdcard/madversion
+if (( "$cachereboot" )) ;then
+    log_msg 2 "Rebooting into recovery mode for required installations"
+    echo '--wipe_cache' >> /cache/recovery/command
+    reboot recovery
+fi
+
+log_msg 2 "Configuring atv settings"
 [[ $(settings get global hdmi_control_enabled) != "0" ]] && settings put global hdmi_control_enabled 0
 [[ "$(/system/bin/getprop persist.sys.app.rotation)" != "middle_port" ]] && /system/bin/setprop persist.sys.app.rotation middle_port
 [[ $(settings get global stay_on_while_plugged_in) != 3 ]] && settings put global stay_on_while_plugged_in 3
 [[ "$(/system/bin/appops get de.grennith.rgc.remotegpscontroller android:mock_location)" = "No operations." ]] && /system/bin/appops set de.grennith.rgc.remotegpscontroller android:mock_location allow
 ! settings get secure location_providers_allowed|grep -q gps && settings put secure location_providers_allowed +gps
-echo "$madver" > /sdcard/madversion
-if (( "$cachereboot" )) ;then
-    log_msg "2" "Rebooting into recovery mode for required installations"
-    echo '--wipe_cache' >> /cache/recovery/command
-    reboot recovery
-fi
+
 log_msg 2 "Configuring RGC and PD, setting permissions"
 pdir="/data/data/com.mad.pogodroid/"
 puser="$(stat -c %u "$pdir")"
