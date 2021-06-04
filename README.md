@@ -16,7 +16,7 @@ __BE PATIENT__ it takes 4 minutes fro device to show up in MADmin !!
 <BR>
 
   ## USB files
-1. Make sure at least, like for 64bit autoconfig, that file ``madautoconf`` is stored on usd.
+1. Make sure at least, like for 64bit autoconfig, that file ``mad_autoconf.txt`` is stored on usb.
 2. Rom can copy files from usb instead of downloading to speed up the process see links below and do no change filenames:<BR>
   - <https://raw.githubusercontent.com/Map-A-Droid/MAD/master/APK/RemoteGpsController.apk>
   - <https://www.maddev.eu/apk/PogoDroid.apk>
