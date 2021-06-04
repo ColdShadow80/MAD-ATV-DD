@@ -6,7 +6,7 @@ pver="2.0"
 #This is for nfs install script
 nver="1.2"
 # mad rom version
-madver="0.2.7"
+madver="0.2.10"
 #magisk version / url
 magisk_ver="20.3"
 msum="959e46971c2eb500b91a053b2f1c1a8c"
@@ -509,9 +509,9 @@ else
             log_msg 2 "Installed /system/bin/update_mad.sh"
             fi
                 
-            PDusb="$(find /mnt/media_rw/ -iname PogoDroid*.apk 2>/dev/null)"
-            POGOusb="$(find /mnt/media_rw/ -iname pokemon*.apk 2>/dev/null)"
-            RGCusb="$(find /mnt/media_rw/ -iname rgc.apk 2>/dev/null)"
+            PDusb="$(find /mnt/media_rw/ -iname *PogoDroid*.apk 2>/dev/null)"
+            POGOusb="$(find /mnt/media_rw/ -iname *pokemongo*.apk 2>/dev/null)"
+            RGCusb="$(find /mnt/media_rw/ -iname *RemoteGpsController*.apk 2>/dev/null)"
             if [[ -z "$PDusb" || -z "$POGOusb" || -z "$RGCusb" ]] ;then
                 log_msg 2 "Starting download and install of RGC, PoGo and PD from your madmin wizard"
                 sh -x /system/bin/update_mad.sh -pdc -wa
