@@ -12,7 +12,12 @@ Why? To learn a bit more...and because no one was gonna do it anyway so why not 
 (Credits go for all the people that made the scripts I "borrowed" for this repo. Contents from this are 99% not mine, except for some precision editing and copy paste into the right (new) places when needed. I am just messing around a bit)
 <BR>
 <BR>
-Rom can copy files from usb instead of downloading to speed up the process see links below and do no change filenames:<BR>
+__BE PATIENT__ it takes 4 minutes fro device to show up in MADmin !!
+<BR>
+
+  ## USB files
+1. Make sure at least, like for 64bit autoconfig, that file ``madautoconf`` is stored on usd.
+2. Rom can copy files from usb instead of downloading to speed up the process see links below and do no change filenames:<BR>
   - <https://raw.githubusercontent.com/Map-A-Droid/MAD/master/APK/RemoteGpsController.apk>
   - <https://www.maddev.eu/apk/PogoDroid.apk>
   - whatever_pokemongo_whatever.apk
