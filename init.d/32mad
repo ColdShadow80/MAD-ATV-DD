@@ -510,7 +510,7 @@ else
             fi
                 
             PDusb="$(find /mnt/media_rw/ -iname PogoDroid*.apk 2>/dev/null)"
-            POGOusb="$(find /mnt/media_rw/ -iname pokemon*.apk 2>/dev/null)"
+            POGOusb="$(find /mnt/media_rw/ -iname *pokemongo*.apk 2>/dev/null)"
             RGCusb="$(find /mnt/media_rw/ -iname rgc.apk 2>/dev/null)"
             if [[ -z "$PDusb" || -z "$POGOusb" || -z "$RGCusb" ]] ;then
                 log_msg 2 "Starting download and install of RGC, PoGo and PD from your madmin wizard"
