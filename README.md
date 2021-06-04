@@ -27,4 +27,4 @@ __BE PATIENT__ it takes 4 minutes fro device to show up in MADmin !!
   - <https://github.com/Map-A-Droid/MAD-ATV/raw/master/nfs/NFS-INJECTOR-v7.8.FLASHPOINT.zip>
 <BR>  
   Note 1: NFS will only be installed when located on usb !! other files will me downloaded when not included.<BR>
-  Note 2: for pogo make sure filename contains ''pokemongo''
+  Note 2: for pogo make sure filename contains ``pokemongo``<BR>
