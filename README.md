@@ -12,7 +12,7 @@ Why? To learn a bit more...and because no one was gonna do it anyway so why not 
 (Credits go for all the people that made the scripts I "borrowed" for this repo. Contents from this are 99% not mine, except for some precision editing and copy paste into the right (new) places when needed. I am just messing around a bit)
 <BR>
 <BR>
-__BE PATIENT__ it takes 4 minutes fro device to show up in MADmin !!
+__BE PATIENT__ it takes 4 minutes for the device to show up in MADmin autoconfig !!
 <BR>
 
   ## USB files
