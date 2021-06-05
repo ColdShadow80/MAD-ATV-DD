@@ -271,7 +271,7 @@ echo "Network connection detected"
 repack_magisk(){
 log_msg 2 "Starting Magisk repackaging"
 monkey -p com.topjohnwu.magisk 1
-sleep 45
+sleep 50
 input tap 39 42
 sleep 5
 input tap 70 355
