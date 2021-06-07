@@ -27,4 +27,5 @@ __BE PATIENT__ it takes 4 minutes for the device to show up in MADmin autoconfig
   - <https://github.com/Map-A-Droid/MAD-ATV/raw/master/nfs/NFS-INJECTOR-v7.8.FLASHPOINT.zip>
 <BR>  
   Note 1: NFS will only be installed when located on usb !! other files will me downloaded when not included.<BR>
-  Note 2: for pogo make sure filename contains pokemongo <BR>
+  Note 2: For pogo make sure filename contains pokemongo 
+  Note 3: This ROM has been made for use with PTC Accounts. Google login does not work for Autoconfig and has not been tested in any way, so use PTC logins only<BR>
