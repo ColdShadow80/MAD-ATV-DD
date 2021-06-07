@@ -24,9 +24,17 @@ if ! [[ -f "$initfile" ]] ;then
  CustomRom="$(find /mnt/media_rw/ -iname CustomRom.txt 2>/dev/null)"
  sleep 5
  if [[ -z "$CustomRom" ]] ;then
-  download https://raw.githubusercontent.com/ColdShadow80/MAD-ATV-DD/main/init.d/32mad "$initfile" && chmod +x /system/etc/init.d/*
+  CustomUrl="$(find /mnt/media_rw/ -name mad_autoconf.txt|head -n1)"
+  if [[ "$CustomRom" ]] ;then
+   download "$CustomUrl" "$initfile" && chmod +x /system/etc/init.d/*
+   echo "Installing 32mad from custom url"
+  else
+   download https://raw.githubusercontent.com/ColdShadow80/MAD-ATV-DD/develop/init.d/32mad "$initfile" && chmod +x /system/etc/init.d/*
+   echo "Installing 32mad from Develop branch"
+ fi
  else
   download https://raw.githubusercontent.com/ColdShadow80/MAD-ATV-DD/develop/init.d/32mad "$initfile" && chmod +x /system/etc/init.d/*
+  echo "Installing 32mad from Main branch"
  fi
  sleep 5
  /system/bin/sh -x "$initfile" 2>"/data/local/madromlogs/32mad.log"
