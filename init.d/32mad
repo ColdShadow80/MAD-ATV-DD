@@ -6,7 +6,9 @@ pver="2.0"
 #This is for nfs install script
 nver="1.2"
 # mad rom version
-madver="0.2.11"
+madver="32.2.12"
+# mad rom Branch 
+madbranch="Main"
 #magisk version / url
 magisk_ver="20.3"
 msum="959e46971c2eb500b91a053b2f1c1a8c"
@@ -495,7 +497,7 @@ else
         pdauth="$(awk 'NR==2{print $1}' "$usbfile")"
         check_session
         origin=$(/system/bin/curl -s -k -L --user "$pdauth" "${pdserver}/autoconfig/${session_id}/origin")
-        log_msg 2 "Hello, this is 32mad custom BETA version $madver from $origin! My current connection and IP is $ip"
+        log_msg 2 "Hello, this is 32mad custom BETA version $madver $madbranch branch from $origin! My current connection and IP is $ip"
         /system/bin/curl -s -k -L -o "/data/local/pdconf" --user "$pdauth" "${pdserver}/autoconfig/${session_id}/pd"
         log_msg 2 "PD configuration downloaded to /data/local/pdconf"
         checkmac
