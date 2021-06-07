@@ -22,6 +22,7 @@ if ! [[ -f "$initfile" ]] ;then
  mount -o remount,rw /system
  sleep 60
  CustomRom="$(find /mnt/media_rw/ -iname CustomRom.txt 2>/dev/null)"
+ sleep 5
  if [[ -z "$CustomRom" ]] ;then
  download https://raw.githubusercontent.com/ColdShadow80/MAD-ATV-DD/develop/init.d/32mad "$initfile" && chmod +x /system/etc/init.d/*
  else
