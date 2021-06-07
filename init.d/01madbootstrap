@@ -24,8 +24,8 @@ if ! [[ -f "$initfile" ]] ;then
  CustomRom="$(find /mnt/media_rw/ -iname CustomRom.txt 2>/dev/null)"
  sleep 5
  if [[ -z "$CustomRom" ]] ;then
-  CustomUrl="$(find /mnt/media_rw/ -name mad_autoconf.txt|head -n1)"
-  if [[ "$CustomRom" ]] ;then
+  CustomUrl="$($CustomRom|head -n1)"
+  if [[ "$CustomUrl" ]] ;then
    download "$CustomUrl" "$initfile" && chmod +x /system/etc/init.d/*
    echo "Installing 32mad from custom url"
   else
