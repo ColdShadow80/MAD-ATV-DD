@@ -10,6 +10,11 @@ until /system/bin/curl -s -k -L -A "$useragent" -o "$2" "$1" ;do
 done
 }
 
+if [[ -f /data/local/madromlogs/32mad.log ]] ;then
+  rm -f -- /data/local/madromlogs/32mad.log.old
+  mv /data/local/madromlogs/32mad.log /data/local/madromlogs/32mad.log.old
+fi
+
 initfile="/system/etc/init.d/32mad"
 
 if ! [[ -f "$initfile" ]] ;then
