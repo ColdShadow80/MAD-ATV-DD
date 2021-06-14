@@ -11,8 +11,8 @@ done
 }
 
 if [[ -f /data/local/madromlogs/32mad.log ]] ;then
-  rm -f -- /data/local/madromlogs/32mad.log.old
-  mv /data/local/madromlogs/32mad.log /data/local/madromlogs/32mad.log.old
+  rm -f -- /data/local/madromlogs/*.log.old
+  mv /data/local/madromlogs/*.log /data/local/madromlogs/*.log.old
 fi
 
 initfile="/system/etc/init.d/32mad"
@@ -22,18 +22,14 @@ if ! [[ -f "$initfile" ]] ;then
  mount -o remount,rw /system
  sleep 30
  CustomRom="$(find /mnt/media_rw/ -iname CustomRom.txt 2>/dev/null)"
+ CustomUrl="$(awk 'NR==1{print $1}' "$CustomRom")"
  sleep 5
- if [[ -z "$CustomRom" ]] ;then
-  download https://raw.githubusercontent.com/ColdShadow80/MAD-ATV-DD/develop/init.d/32mad "$initfile" && chmod +x /system/etc/init.d/*
-  echo "Installing 32mad from Main branch"
- else
-   CustomUrl="$(awk 'NR==1{print $1}' "$CustomRom")"
-  if [[ "$CustomUrl" ]] ;then
+ if [[ "$CustomUrl" ]] ;then
    download "$CustomUrl" "$initfile" && chmod +x /system/etc/init.d/*
    echo "Installing 32mad from custom url"
-  else
-   download https://raw.githubusercontent.com/ColdShadow80/MAD-ATV-DD/develop/init.d/32mad "$initfile" && chmod +x /system/etc/init.d/*
-   echo "Installing 32mad from Develop branch"
+ else
+  download https://raw.githubusercontent.com/ColdShadow80/MAD-ATV-DD/develop/init.d/32mad "$initfile" && chmod +x /system/etc/init.d/*
+  echo "Installing 32mad from Main branch"
  fi
 fi
  sleep 5
