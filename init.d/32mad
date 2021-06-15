@@ -14,7 +14,7 @@ magisk_ver="20.3"
 msum="959e46971c2eb500b91a053b2f1c1a8c"
 url_magisk="https://github.com/Map-A-Droid/MAD-ATV/raw/master/Magisk-v20.3.zip"
 NFS_url="https://github.com/Map-A-Droid/MAD-ATV/raw/master/nfs/NFS-INJECTOR-v7.8.FLASHPOINT.zip"
-url_gapps="https://madatv.b-cdn.net/open_gapps-arm64-7.1-pico-20200715.zip"
+#Removed Google Apps 64 bits, this is a 32bits rom
 rgcconf="/data/data/de.grennith.rgc.remotegpscontroller/shared_prefs/de.grennith.rgc.remotegpscontroller_preferences.xml"
 pdconf="/data/data/com.mad.pogodroid/shared_prefs/com.mad.pogodroid_preferences.xml"
 useragent='Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:53.0) Gecko/20100101 Firefox/53.0'
@@ -537,22 +537,6 @@ fi
 
 mount -o remount,rw /system
 check_magisk
-
-# Download and install gapps
-if [[ ! $(pm list packages android.vending) ]] ;then
-	GAPPSusb="$(find /mnt/media_rw/ -iname open_gapps-arm64-7.1-pico-20200715.zip 2>/dev/null)"
-	if [[ -z "$PDusb" ]] ;then
-		log_msg 2 "Downloading gapps"
-		download "$url_gapps" /sdcard/gapps.zip
-	else
-		log_msg 2 "Copy gapps from usb"
-		cp $GAPPSusb /sdcard/gapps.zip
-	fi
-#	mkdir -p /cache/recovery
-    touch /cache/recovery/command
-    echo '--update_package=/sdcard/gapps.zip' >> /cache/recovery/command
-    cachereboot=1
-fi
 	
 [[ -d /sdcard/TWRP ]] && rm -rf /sdcard/TWRP
 echo "$madver" > /sdcard/madversion
