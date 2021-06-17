@@ -8,7 +8,7 @@ nver="1.2"
 # mad rom version
 madver="32.2.12"
 # mad rom Branch 
-madbranch="develop"
+madbranch="Main"
 #magisk version / url
 magisk_ver="20.3"
 msum="959e46971c2eb500b91a053b2f1c1a8c"
