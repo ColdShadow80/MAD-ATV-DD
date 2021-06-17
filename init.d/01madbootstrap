@@ -12,7 +12,9 @@ done
 
 if [[ -f /data/local/madromlogs/32mad.log ]] ;then
   rm -f -- /data/local/madromlogs/*.log.old
-  mv /data/local/madromlogs/*.log /data/local/madromlogs/*.log.old
+  for f in /data/local/madromlogs/*.log; do 
+    mv -- "$f" "${f%.log}.log.old"
+  done
 fi
 
 initfile="/system/etc/init.d/32mad"
