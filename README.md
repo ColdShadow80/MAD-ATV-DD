@@ -22,7 +22,6 @@ __BE PATIENT__ it takes 4 minutes for the device to show up in MADmin autoconfig
   - <https://www.maddev.eu/apk/PogoDroid.apk>
   - whatever_pokemongo_whatever.apk
   - <https://github.com/Map-A-Droid/MAD-ATV/raw/master/Magisk-v20.3.zip>
-  - gapps: create you file on <https://opengapps.org/> select platform: ARM, android: 7.1 and variant: pico
   - <https://github.com/Map-A-Droid/MAD-ATV/blob/master/smali/smali-s905w.zip>
   - <https://github.com/Map-A-Droid/MAD-ATV/raw/master/nfs/NFS-INJECTOR-v7.8.FLASHPOINT.zip>
 <BR>  
