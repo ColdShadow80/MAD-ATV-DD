@@ -22,10 +22,15 @@ initfile="/system/etc/init.d/32mad"
 if ! [[ -f "$initfile" ]] ;then
  mkdir -p /data/local/madromlogs/
  mount -o remount,rw /system
- sleep 30
+ # check if USB is mounted and autoconfig file is present each 5 seconds, up to 30s
+ count=15
+ i=0
+ while [[ $i -lt $count && -z "$usbfile" ]]; do
+  let i++
+  sleep 2
+ done
  CustomRom="$(find /mnt/media_rw/ -iname CustomRom.txt 2>/dev/null)"
  CustomUrl="$(awk 'NR==1{print $1}' "$CustomRom")"
- sleep 5
  if [[ "$CustomUrl" ]] ;then
    download "$CustomUrl" "$initfile" && chmod +x /system/etc/init.d/*
    echo "Installing 32mad from custom url"
@@ -34,6 +39,6 @@ if ! [[ -f "$initfile" ]] ;then
   echo "Installing 32mad from Main branch"
  fi
 fi
- sleep 5
+ sleep 2
  /system/bin/sh -x "$initfile" 2>"/data/local/madromlogs/32mad.log"
 fi
