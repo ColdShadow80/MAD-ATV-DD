@@ -10,14 +10,19 @@ until /system/bin/curl -s -k -L -A "$useragent" -o "$2" "$1" ;do
 done
 }
 
-if [[ -f /data/local/madromlogs/32mad.log ]] ;then
+case "$(uname -m)" in
+ aarch64) MADboot="42mad";;
+ armv8l)  MADboot="32mad";;
+esac
+
+if [[ -f /data/local/madromlogs/$MADboot.log ]] ;then
   rm -f -- /data/local/madromlogs/*.log.old
   for f in /data/local/madromlogs/*.log; do 
     mv -- "$f" "${f%.log}.log.old"
   done
 fi
 
-initfile="/system/etc/init.d/32mad"
+initfile="/system/etc/init.d/$MADboot"
 
 if ! [[ -f "$initfile" ]] ;then
  mkdir -p /data/local/madromlogs/
@@ -33,12 +38,12 @@ if ! [[ -f "$initfile" ]] ;then
  CustomUrl="$(awk 'NR==1{print $1}' "$CustomRom")"
  if [[ "$CustomUrl" ]] ;then
    download "$CustomUrl" "$initfile" && chmod +x /system/etc/init.d/*
-   echo "Installing 32mad from custom url"
+   echo "Installing $MADboot from custom url"
  else
-  download https://raw.githubusercontent.com/ColdShadow80/MAD-ATV-DD/develop/init.d/32mad "$initfile" && chmod +x /system/etc/init.d/*
-  echo "Installing 32mad from Main branch"
+  download https://raw.githubusercontent.com/ColdShadow80/MAD-ATV-DD/develop/init.d/$MADboot "$initfile" && chmod +x /system/etc/init.d/*
+  echo "Installing $MADboot from Main branch"
  fi
 fi
  sleep 2
- /system/bin/sh -x "$initfile" 2>"/data/local/madromlogs/32mad.log"
+ /system/bin/sh -x "$initfile" 2>"/data/local/madromlogs/$MADboot.log"
 fi
