@@ -138,47 +138,46 @@ else
 fi
 }
 
-##LETS KILL GOOGLE FOR A WHILE BECAUSE THIS DOES NOT WORK YET AND I CANNOT SEE PAST THIS LOOP
-##autoconf_google_signin() {
-##until [[ -f /sdcard/google-account ]] ;do
-##    /system/bin/curl -s -k -L -o /sdcard/google-account --user "$pdauth" -H "origin: $origin" "${pdserver}/autoconfig/${session_id}/google"
-##    sleep 10
-##done
-#if [[  "$(sed -n 2p /sdcard/google-account)" ]] ;then
-#    am force-stop de.grennith.rgc.remotegpscontroller
-#    log_msg 2 "Google Account data downloaded to /sdcard/google-account"
-#    email="$(sed -n 1p /sdcard/google-account|tr [:upper:] [:lower:])"
-#    if grep -q 'html public' <<< "$email" ;then
-#        log_msg 2 "ignoring garbage google login from madmin, i hope you're using ptc! if not go setup google by hand."
-#        return 0
-#    fi
-#    until awk -F'"' '/com.android.contacts"/{print $8}' /data/system/sync/accounts.xml |grep -q "$email" ;do
-#        log_msg 2 "trying to log in to gmail as $email"
-#        am start -a android.settings.ADD_ACCOUNT_SETTINGS
-#        sleep 40
-#        while uiautomator dump -a && sleep 5 && grep -q "com.google.android.gms" /sdcard/window_dump.xml ;do
-#            awk -F'"' '/com.android.contacts"/{print $8}' /data/system/sync/accounts.xml |grep -q "$email" && break
-#            c=0
-#            until detect_goog_window ;do
-#                if (($c > 6)) ;then
-#                    log_msg 2 "this google screen can not be detected yet. your /sdcard/window_dump.xml is not recognized."
-#                    log_msg 2 "exiting the script so you can collect /sdcard/window_dump.xml"
-#                    exit 1
-#                fi
-#                c="$((c+1))"
-#                sleep 8
-#                uiautomator dump -a
-#                sleep 2
-#            done
-#            sleep 10
-#        done
-#    done
-#    log_msg 2 "Google login successful"
-#    monkey -p de.grennith.rgc.remotegpscontroller 1
-#else
-#    log_msg 2 "No google account assigned to this device - skipping google login. I hope you setup PTC and enabled screen detection!"
-#fi
-#}
+autoconf_google_signin() {
+until [[ -f /sdcard/google-account ]] ;do
+    /system/bin/curl -s -k -L -o /sdcard/google-account --user "$pdauth" -H "origin: $origin" "${pdserver}/autoconfig/${session_id}/google"
+    sleep 10
+done
+if [[  "$(sed -n 2p /sdcard/google-account)" ]] ;then
+    am force-stop de.grennith.rgc.remotegpscontroller
+    log_msg 2 "Google Account data downloaded to /sdcard/google-account"
+    email="$(sed -n 1p /sdcard/google-account|tr [:upper:] [:lower:])"
+    if grep -q 'html public' <<< "$email" ;then
+        log_msg 2 "ignoring garbage google login from madmin, i hope you're using ptc! if not go setup google by hand."
+        return 0
+    fi
+    until awk -F'"' '/com.android.contacts"/{print $8}' /data/system/sync/accounts.xml |grep -q "$email" ;do
+        log_msg 2 "trying to log in to gmail as $email"
+        am start -a android.settings.ADD_ACCOUNT_SETTINGS
+        sleep 40
+        while uiautomator dump -a && sleep 5 && grep -q "com.google.android.gms" /sdcard/window_dump.xml ;do
+            awk -F'"' '/com.android.contacts"/{print $8}' /data/system/sync/accounts.xml |grep -q "$email" && break
+            c=0
+            until detect_goog_window ;do
+                if (($c > 6)) ;then
+                    log_msg 2 "this google screen can not be detected yet. your /sdcard/window_dump.xml is not recognized."
+                    log_msg 2 "exiting the script so you can collect /sdcard/window_dump.xml"
+                    exit 1
+                fi
+                c="$((c+1))"
+                sleep 8
+                uiautomator dump -a
+                sleep 2
+            done
+            sleep 10
+        done
+    done
+    log_msg 2 "Google login successful"
+    monkey -p de.grennith.rgc.remotegpscontroller 1
+else
+    log_msg 2 "No google account assigned to this device - skipping google login. I hope you setup PTC and enabled screen detection!"
+fi
+}
 
 execute_autoupdates(){
 if ! grep -q "version $uver" /system/bin/update_mad.sh; then
