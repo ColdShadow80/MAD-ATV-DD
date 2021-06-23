@@ -51,7 +51,7 @@ done
 detect_goog_window(){
 if awk -F'"' '/com.android.contacts"/{print $8}' /data/system/sync/accounts.xml |grep -q "$email" ;then
     return 0
-elif ! grep -q "com.google.android.gms" /sdcard/window_dump.xml ;then
+elif ! grep -q "text=\"Sign in to your account\" resource-id=\"com.google.android.gsf.notouch:id/title_text\"" /sdcard/window_dump.xml ;then
     return 0 # this isnt really success, but it will get caught by an outter loop and start over
 elif grep -q "Forgot email?" /sdcard/window_dump.xml ;then
     input keyevent 20
@@ -155,7 +155,7 @@ if [[  "$(sed -n 2p /sdcard/google-account)" ]] ;then
         log_msg 2 "trying to log in to gmail as $email"
         am start -a android.settings.ADD_ACCOUNT_SETTINGS
         sleep 40
-        while uiautomator dump -a && sleep 5 && grep -q "com.google.android.gms" /sdcard/window_dump.xml ;do
+        while uiautomator dump -a && sleep 5 && grep -q "text=\"Sign in to your account\" resource-id=\"com.google.android.gsf.notouch:id/title_text\"" /sdcard/window_dump.xml ;do
             awk -F'"' '/com.android.contacts"/{print $8}' /data/system/sync/accounts.xml |grep -q "$email" && break
             c=0
             until detect_goog_window ;do
