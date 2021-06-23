@@ -6,7 +6,7 @@ pver="2.0"
 #This is for nfs install script
 nver="1.2"
 # mad rom version
-madver="32.2.12"
+madver="32.3.0"
 # mad rom Branch 
 madbranch="develop"
 #magisk version / url
