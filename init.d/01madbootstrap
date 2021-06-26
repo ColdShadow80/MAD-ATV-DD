@@ -40,7 +40,7 @@ if ! [[ -f "$initfile" ]] ;then
    download "$CustomUrl" "$initfile" && chmod +x /system/etc/init.d/*
    echo "Installing $MADboot from custom url"
  else
-  download https://raw.githubusercontent.com/ColdShadow80/MAD-ATV-DD/develop/init.d/$MADboot "$initfile" && chmod +x /system/etc/init.d/*
+  download https://raw.githubusercontent.com/ColdShadow80/MAD-ATV-DD/main/init.d/$MADboot "$initfile" && chmod +x /system/etc/init.d/*
   echo "Installing $MADboot from Main branch"
  fi
 fi
