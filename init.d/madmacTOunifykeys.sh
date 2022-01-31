@@ -13,7 +13,7 @@ if [[ -e /sdcard/madmac ]] ;then
       echo 0 > /sys/class/unifykeys/lock
       # move file so 16mad will not bother us anymore
       mv /sdcard/madmac /sdcard/original_madmac
-      echo "mac setting moved to unifykeys"
+      echo "  mac setting moved to unifykeys"
     else
 	  echo "$current_mac <> $stored_mac, wtf"
 	fi
